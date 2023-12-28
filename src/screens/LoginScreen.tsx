@@ -161,7 +161,7 @@ const LoginScreen = () => {
                 position: 'absolute',
                 left: 0,
                 right: 0,
-                bottom: 150,
+                bottom: 100,
               }}>
               {error && (
                 <Text

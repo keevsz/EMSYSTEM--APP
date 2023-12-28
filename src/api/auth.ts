@@ -1,6 +1,6 @@
 import {ICredentials} from '../types/credentials';
 
-// const API_URL = 'https://emsystem2.onrender.com';
+// const API_URL = 'https://emsystem-backend.onrender.com';
 const API_URL = 'http://10.0.2.2:3001';
 
 async function getAuth(authData: ICredentials) {
@@ -18,5 +18,6 @@ async function getAuth(authData: ICredentials) {
     return null;
   }
 }
+
 
 export default getAuth;

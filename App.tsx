@@ -1,14 +1,11 @@
 import React, {useState} from 'react';
-import {useColorScheme, TouchableOpacity, Text, View} from 'react-native';
-
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from './src/screens/LoginScreen';
 import {AuthProvider, useAuth} from './src/context/AuthContext';
 import {NavigationContainer} from '@react-navigation/native';
-import HomeScreen from './src/screens/parents/HomeScreen';
-import HeaderStackScreen from './src/components/HeaderStackScreen';
+import ParentScreen from './src/screens/parents/ParentScreen';
 import SplashScreen from './src/screens/SplashScreen';
+import AdminScreen from './src/screens/admin/AdminScreen';
 
 const Stack = createNativeStackNavigator();
 function App(): JSX.Element {
@@ -20,47 +17,31 @@ function App(): JSX.Element {
 }
 
 export const Layout = () => {
-  const {authState, onLogout, loading} = useAuth();
+  const {authState, onLogout, loading, userAuth} = useAuth();
   const [splashStatus, setSplashStatus] = useState(true);
+
   setTimeout(() => {
     if (!loading) {
       setSplashStatus(false);
     }
   }, 2100);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}>
         {splashStatus ? (
-          <Stack.Screen
-            options={{
-              header: () => {
-                return <></>;
-              },
-            }}
-            name="Splash"
-            component={SplashScreen}
-          />
+          <Stack.Screen name="Splash" component={SplashScreen} />
         ) : authState?.authenticated ? (
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{
-              header: () => {
-                return <></>;
-              },
-            }}
-          />
+          userAuth?.role === 'admin' ? (
+            <Stack.Screen name="AdminHome" component={AdminScreen} />
+          ) : (
+            <Stack.Screen name="UserHome" component={ParentScreen} />
+          )
         ) : (
-          <Stack.Screen
-            options={{
-              headerTitleAlign: 'center',
-              header: () => {
-                return <HeaderStackScreen title="Login" />;
-              },
-            }}
-            name="Login"
-            component={LoginScreen}
-          />
+          <Stack.Screen name="Login" component={LoginScreen} />
         )}
       </Stack.Navigator>
     </NavigationContainer>
